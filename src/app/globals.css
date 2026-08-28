@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================================================================
+   K-NETWORK Design System — Global Styles
+   Source of truth: UXDS-1 (K-NETWORK UI/UX Design Specification)
+   Accessibility target: WCAG 2.2 AA
+   =========================================================================== */
+
+/* Typography — loaded via system font stacks to avoid build-time font fetch.
+   Per UXDS-1: Satoshi (headings), Inter (body), JetBrains Mono (mono).
+   Inter is the fallback for Satoshi; system-ui covers offline/local contexts. */
+@layer base {
+  :root {
+    --font-heading: 'Satoshi', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+    /* Surface tokens (light mode defaults) */
+    --color-page-bg: #fafafb;
+    --color-card-bg: #ffffff;
+    --color-text-primary: #0a0a0b;
+    --color-text-secondary: #6b6b76;
+    --color-border: #e5e5ec;
+    --color-primary-button: #4755d4;
+    --color-primary-button-hover: #3b3f9c;
+  }
+
+  .dark {
+    --color-page-bg: #0a0a0b;
+    --color-card-bg: #1a1a1e;
+    --color-text-primary: #fafafb;
+    --color-text-secondary: #a8a8b3;
+    --color-border: #2d2d33;
+    --color-primary-button: #6b7ae8;
+    --color-primary-button-hover: #9ba4f0;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-neutral-50 text-neutral-950 font-body antialiased;
+    min-height: 100vh;
+  }
+
+  .dark body {
+    @apply bg-neutral-950 text-neutral-50;
+  }
+
+  /* Headings use the heading font family */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  /* Accessible focus ring — visible on keyboard navigation only */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white;
+  }
+
+  .dark :focus-visible {
+    @apply ring-offset-neutral-950;
+  }
+
+  /* Respect reduced motion preferences (WCAG 2.2 — 2.3.3 Animation) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Skip link — visible only when focused */
+  .skip-link {
+    @apply sr-only;
+  }
+
+  .skip-link:focus {
+    @apply not-sr-only fixed left-4 top-4 z-modal rounded-md bg-primary-500 px-4 py-2 text-body-sm font-medium text-white shadow-lg;
+  }
+}
+
+@layer components {
+  /* Shimmer animation for skeleton loading components */
+  .shimmer {
+    @apply relative overflow-hidden bg-neutral-200;
+  }
+
+  .shimmer::after {
+    @apply absolute inset-0;
+    content: '';
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    );
+    animation: shimmer-sweep 1.5s infinite;
+  }
+
+  @keyframes shimmer-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
